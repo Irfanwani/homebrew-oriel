@@ -1,5 +1,7 @@
 # Homebrew Tap for Oriel
 
+[![Test cask](https://github.com/Irfanwani/homebrew-oriel/actions/workflows/test.yml/badge.svg)](https://github.com/Irfanwani/homebrew-oriel/actions/workflows/test.yml)
+
 [A calmer desktop for macOS.](https://github.com/Irfanwani/oriel)
 
 ## Install
