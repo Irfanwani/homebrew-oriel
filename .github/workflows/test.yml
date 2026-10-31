@@ -1,0 +1,39 @@
+name: Test cask
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    name: Install from tap
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Tap repository
+        run: brew tap Irfanwani/oriel https://github.com/Irfanwani/homebrew-oriel
+
+      - name: Audit cask
+        run: brew audit --cask --strict irfanwani/oriel/oriel
+
+      - name: Install cask
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+        run: brew install --cask irfanwani/oriel/oriel
+
+      - name: Verify app and CLI
+        run: |
+          test -x "/Applications/Oriel.app/Contents/MacOS/Oriel"
+          codesign --verify --deep --strict "/Applications/Oriel.app"
+          file "/Applications/Oriel.app/Contents/MacOS/Oriel"
+          oriel version
+
+      - name: Uninstall
+        run: brew uninstall --cask oriel
