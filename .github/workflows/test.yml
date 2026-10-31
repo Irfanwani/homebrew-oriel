@@ -17,8 +17,8 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v4
 
-      - name: Tap repository
-        run: brew tap Irfanwani/oriel https://github.com/Irfanwani/homebrew-oriel
+      - name: Tap checked-out cask
+        run: brew tap Irfanwani/oriel "$GITHUB_WORKSPACE"
 
       - name: Audit cask
         run: brew audit --cask --strict irfanwani/oriel/oriel
