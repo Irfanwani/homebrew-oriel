@@ -16,9 +16,9 @@ Homebrew's bin directory.
 
 ## Updates
 
-The cask is normally updated automatically from the latest [Oriel release](https://github.com/Irfanwani/oriel/releases). `brew upgrade --cask oriel` installs the new version once it is available.
+The cask is normally updated automatically from the latest [Oriel release](https://github.com/Irfanwani/oriel/releases). The updater runs hourly, can be dispatched instantly by the release workflow, and audits + installs the updated cask before committing. `brew upgrade --cask oriel` installs the new version once it is available.
 
-Maintainers can also run the **Update cask** workflow manually from the Actions tab. It verifies the new cask and commits the version/SHA change without a personal access token.
+Maintainers can also run the **Update cask** workflow manually from the Actions tab. See the [release guide](https://github.com/Irfanwani/oriel/blob/main/RELEASING.md) for the optional `TAP_TOKEN` setup.
 
 ## Upgrade
 
