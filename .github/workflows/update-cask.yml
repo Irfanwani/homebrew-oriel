@@ -1,0 +1,66 @@
+name: Update cask
+
+on:
+  schedule:
+    # Poll once an hour; releases dispatched by the app repo update immediately.
+    - cron: "23 * * * *"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to mirror (defaults to the latest release)
+        required: false
+        type: string
+  repository_dispatch:
+    types: [oriel-release]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-cask
+  cancel-in-progress: true
+
+jobs:
+  update:
+    name: Mirror Oriel release
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Update cask from release
+        id: update
+        env:
+          CLIENT_TAG: ${{ github.event.client_payload.tag }}
+          MANUAL_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          TAG="${CLIENT_TAG:-${MANUAL_TAG:-}}"
+          ./scripts/update-cask.sh "$TAG"
+          if git diff --quiet -- Casks/oriel.rb; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Test updated cask
+        if: steps.update.outputs.changed == 'true'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+        run: |
+          brew audit --cask --strict ./Casks/oriel.rb
+          brew install --cask ./Casks/oriel.rb
+          test -x "/Applications/Oriel.app/Contents/MacOS/Oriel"
+          codesign --verify --deep --strict "/Applications/Oriel.app"
+          oriel version
+          brew uninstall --cask oriel
+
+      - name: Commit updated cask
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          VERSION="$(sed -n 's/^  version "\(.*\)"$/\1/p' Casks/oriel.rb)"
+          git config user.name "oriel-release-bot"
+          git config user.email "oriel-release-bot@users.noreply.github.com"
+          git add Casks/oriel.rb
+          git commit -m "Update Oriel to ${VERSION}"
+          git push

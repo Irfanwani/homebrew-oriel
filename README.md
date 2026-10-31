@@ -1,6 +1,7 @@
 # Homebrew Tap for Oriel
 
 [![Test cask](https://github.com/Irfanwani/homebrew-oriel/actions/workflows/test.yml/badge.svg)](https://github.com/Irfanwani/homebrew-oriel/actions/workflows/test.yml)
+[![Update cask](https://github.com/Irfanwani/homebrew-oriel/actions/workflows/update-cask.yml/badge.svg)](https://github.com/Irfanwani/homebrew-oriel/actions/workflows/update-cask.yml)
 
 [A calmer desktop for macOS.](https://github.com/Irfanwani/oriel)
 
@@ -12,6 +13,12 @@ brew install --cask irfanwani/oriel/oriel
 
 This installs **Oriel.app** into `/Applications` and the **`oriel`** command into
 Homebrew's bin directory.
+
+## Updates
+
+The cask is normally updated automatically from the latest [Oriel release](https://github.com/Irfanwani/oriel/releases). `brew upgrade --cask oriel` installs the new version once it is available.
+
+Maintainers can also run the **Update cask** workflow manually from the Actions tab. It verifies the new cask and commits the version/SHA change without a personal access token.
 
 ## Upgrade
 
