@@ -1,6 +1,6 @@
 cask "oriel" do
-  version "1.0.0"
-  sha256 "151323f6de731bd4e030dcffe11f0d771790458e629518dc11791a62b932562f"
+  version "1.1.0"
+  sha256 "4b4629e7253c9bd409e73efebe6b2513d4de6445a41a9b5ff68418392252530d"
 
   url "https://github.com/Irfanwani/oriel/releases/download/v#{version}/Oriel-#{version}.dmg"
   name "Oriel"
